@@ -5,6 +5,14 @@
 #include <cctype>
 
 using namespace std;
+bool isNum (const string& tok){
+if (isdigit(tok[0])){
+return true ;
+} else if(tok.size() > 1 && tok[0] == '-' && isdigit (tok[1])){
+return true;
+}
+return false;
+}
 int evaluatePostfix(const vector<string>& tokens){
   stack<int> operands;
   for (const string& token : tokens){
