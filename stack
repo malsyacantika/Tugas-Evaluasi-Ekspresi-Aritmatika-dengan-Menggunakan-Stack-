@@ -1,1 +1,26 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <cctype>
+#include <stack>
 
+using namespace std;
+
+int prec (char oop) {
+if (op == '+' || op == '-') return 1;
+if (op == '*' || op == '/'|| op == '%') return 2;
+return 0;
+}
+
+bool isOp (char ch){
+return (ch == '+' || ch == '-' || ch == '*' || ch == '/'|| ch == '%');
+}
+
+bool isNum (const string& tok){
+if (isdigit(tok[0])){
+return true ;
+} else if(tok.size() > 1 && tok[0] == '-' && isdigit (tok[1])){
+return true;
+}
+return false;
+}
