@@ -11,7 +11,7 @@ vector<string> InfixToPostfix(const string& exp){
   stack<string> oprs;
 
 auto addOp =  [&postfix](const string& op){
-  postfix.PushBack(op);
+  postfix.push_back(op);
 };
 
 for(sizeT i=0; i<exp.size(); i++){
@@ -21,26 +21,32 @@ for(sizeT i=0; i<exp.size(); i++){
 } else if (isdigit(ch)){
     string num(1, ch);
     while(i + 1 <exp.size()&&isdigit(exp[i++])){
-    num += exp[i++];
+      num += exp[i++];
 }
-  postfix.PushBack(num);
+  postfix.push_back(num);
   } else {
     if (ch == '(' ){
-    oprs.push(string(1,ch));
+      oprs.push(string(1,ch));
   }else if (ch == ')') {
     while(!oprs.empty() && oprs.top()! = "(" {
     addOp(oprs.top());
     oprs.pop();
 } 
 oprs.pop()
+
 }else{
 if((i == 0 || !isdigit(exp[i - 1]) || exp[i - 1] =='(') && ch == '-');
+    addOp(oprs.top());
+    oprs.pop();
+
 }else{
 while(!oprs.empty() && oprs.top()!= "(" && prec(oprs.top()[0]) >= prec(ch)){
     addOp(oprs.top());
     oprs.pop();
+
 oprs.push(string(1, ch));
 }}}}
+
 while (!oprs.empty()){
 addOp(oprs.top());
     oprs.pop();
