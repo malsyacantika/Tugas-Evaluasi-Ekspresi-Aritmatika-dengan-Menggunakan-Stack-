@@ -5,17 +5,6 @@
 #include <stack>
 
 using namespace std;
-
-int prec (char op) {
-if (op == '+' || op == '-') return 1;
-if (op == '*' || op == '/'|| op == '%') return 2;
-return 0;
-}
-
-bool isOp (char ch){
-return (ch == '+' || ch == '-' || ch == '*' || ch == '/'|| ch == '%');
-}
-
 vector<string> InfixToPostfix(const string& exp){
   vector<string> postfix;
   stack<string> oprs;
