@@ -14,7 +14,7 @@ int evaluatePostfix(const vector<string>&tokens){
       int operand2 = operands.top(); operands.pop();
       int operand1 = operands.top(); operands.top();
       if(token == "+") operands.push(operand1 + operand2);
-      else if(token == "-") operands,push(operand1 - operand2);
+      else if(token == "-") operands.push(operand1 - operand2);
       else if(token == "*") operands.push(operand1 * operand2);
       else if(token == "/") operands.push(operand1 / operand2);
       else if(token == '%') opernads.push(operand1 % operand2);
