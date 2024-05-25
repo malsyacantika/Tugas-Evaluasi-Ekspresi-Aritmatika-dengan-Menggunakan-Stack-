@@ -5,7 +5,7 @@
 #include <cctype>
 
 using namespace std;
-int evaluatePostfix(const vector<string>&tokens){
+int evaluatePostfix(const vector<string>& tokens){
   stack<int> operands;
   for (const string& token : tokens){
     if (isNum(token)){
