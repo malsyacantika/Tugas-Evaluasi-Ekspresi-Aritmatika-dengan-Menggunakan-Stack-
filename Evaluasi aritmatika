@@ -2,6 +2,7 @@
 #include <stack>
 #include <string>
 #include <vector>
+#include <cctype>
 
 using namespace std;
 int evaluatePostfix(const vector<string>&tokens){
