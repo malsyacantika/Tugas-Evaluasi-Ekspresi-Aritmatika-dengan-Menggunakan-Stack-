@@ -5,7 +5,7 @@
 #include <cctype>
 
 using namespace std;
-int prec (char oop) {
+int prec (char op) {
 if (op == '+' || op == '-') return 1;
 if (op == '*' || op == '/'|| op == '%') return 2;
 return 0;
@@ -34,7 +34,7 @@ int evaluatePostfix(const vector<string>& tokens){
       else if(token == "-") operands.push(operand1 - operand2);
       else if(token == "*") operands.push(operand1 * operand2);
       else if(token == "/") operands.push(operand1 / operand2);
-      else if(token == '%') opernads.push(operand1 % operand2);
+      else if(token == "%") opernads.push(operand1 % operand2);
 }
 } 
 return operand.top();
