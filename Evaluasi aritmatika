@@ -34,10 +34,10 @@ int evaluatePostfix(const vector<string>& tokens){
       else if(token == "-") operands.push(operand1 - operand2);
       else if(token == "*") operands.push(operand1 * operand2);
       else if(token == "/") operands.push(operand1 / operand2);
-      else if(token == "%") opernads.push(operand1 % operand2);
+      else if(token == "%") operands.push(operand1 % operand2);
 }
 } 
-return operand.top();
+return operands.top();
 }
 
 
