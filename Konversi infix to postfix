@@ -6,6 +6,16 @@
 
 using namespace std;
 
+int prec (char op) {
+if (op == '+' || op == '-') return 1;
+if (op == '*' || op == '/'|| op == '%') return 2;
+return 0;
+}
+
+bool isOp (char ch){
+return (ch == '+' || ch == '-' || ch == '*' || ch == '/'|| ch == '%');
+}
+
 vector<string> InfixToPostfix(const string& exp){
   vector<string> postfix;
   stack<string> oprs;
@@ -14,38 +24,42 @@ auto addOp =  [&postfix](const string& op){
   postfix.push_back(op);
 };
 
-for(sizeT i=0; i<exp.size(); i++){
+for( size_t i=0; i<exp.size(); i++){
   char ch = exp [i];
-  if(IsSpace(ch)){
+  if(isspace(ch)){
     continue;
 } else if (isdigit(ch)){
     string num(1, ch);
-    while(i + 1 <exp.size()&&isdigit(exp[i++])){
-      num += exp[i++];
+    while(i + 1 < exp.size() && isdigit(exp[i+1])){
+      num += exp[++i];
 }
   postfix.push_back(num);
   } else {
     if (ch == '(' ){
       oprs.push(string(1,ch));
+        
   }else if (ch == ')') {
-    while(!oprs.empty() && oprs.top()! = "(" {
+    while(!oprs.empty() && oprs.top() != "(" ){
     addOp(oprs.top());
     oprs.pop();
 } 
-oprs.pop()
+oprs.pop();
+}else{
+    if((i == 0 || !isdigit(exp[i - 1]) || exp[i - 1] =='(') && ch == '-'){
+    addOp("-1");
+    oprs.push("*");
 
 }else{
-if((i == 0 || !isdigit(exp[i - 1]) || exp[i - 1] =='(') && ch == '-');
-    addOp(oprs.top());
-    oprs.pop();
+while(!oprs.empty() && oprs.top() != "(" && prec(oprs.top()[0]) >= prec(ch)){
 
-}else{
-while(!oprs.empty() && oprs.top()!= "(" && prec(oprs.top()[0]) >= prec(ch)){
-    addOp(oprs.top());
+  addOp(oprs.top());
     oprs.pop();
-
+    }
 oprs.push(string(1, ch));
-}}}}
+}
+    }
+  }
+}
 
 while (!oprs.empty()){
 addOp(oprs.top());
