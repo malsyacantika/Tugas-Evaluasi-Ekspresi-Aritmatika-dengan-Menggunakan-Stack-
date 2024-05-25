@@ -1,4 +1,15 @@
+#include <iostream>
+#include <stack>
+#include <string>
+#include <vector>
 
-
+using namespace std;
+int evaluatePostfix(const vector<string>&tokens){
+  for (const string& token : tokens){
+    if (isNum(token)){
+      operands.push(stoi(token));
+    }else{
+      int operand2 = operands.top(); operands.pop();
+      int operand1 = operands.top(); operands.top();
 
 
