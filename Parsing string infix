@@ -6,8 +6,27 @@
 
 using namespace std;
 
+int prec (char oop) {
+if (oop == '+' || oop == '-') return 1;
+if (oop == '*' || oop == '/'|| oop == '%') return 2;
+return 0;
+}
+
+bool isOp (char ch){
+return (ch == '+' || ch == '-' || ch == '*' || ch == '/'|| ch == '%');
+}
+
+bool isNum (const string& tok){
+if (isdigit(tok[0])){
+return true ;
+} else if(tok.size() > 1 && tok[0] == '-' && isdigit (tok[1])){
+return true;
+}
+return false;
+}
+
 vector<string> parseInfix(const string &exp){
-  vector<string> token;
+  vector<string> tok;
   string num;
   for(size_t i=0;i<exp.size();++i){
   char ch = exp[i];
@@ -18,25 +37,26 @@ vector<string> parseInfix(const string &exp){
     num+=ch;
   }else{
       if(!num.empty()){
-          token.push_back(num);
+          tok.push_back(num);
           num.clear();
       }
       if(ch=='-'&&(i == 0 || exp[i-1] == '(' || exp [i-1] == '*' || exp[i-1]=='/' || exp[i-1] == '+' || exp [i-1] == '%' || exp[i-1] == '-')) {
         if (i+1<exp.size() && isdigit(exp[i+1])){
             num += ch;
         }else{
-          token.push_back("-1");
-          token.push_back("*");
+          tok.push_back("-1");
+          tok.push_back("*");
         }
-      }else if( ch == '-' && (token.empty() || token.back() == "(" || token.back() == "*" || token.back() == "+" || token.back == "-" || token.back() == "%")){
-          token.push_back("-1");
-          token.push_back("*");
+      }else if( ch == '-' && (tok.empty() || tok.back() == "(" || tok.back() == "*" || tok.back() == "+" || tok.back == "-" || tok.back() == "%")){
+          tok.push_back("-1");
+          tok.push_back("*");
         }else{
+          tok.push_back(string(1,ch));
         }
     }
 }
 if(!num.empty()){  
-    token.push_back(num);
+    tok.push_back(num);
   }
-  return token;
+  return tok;
 }
