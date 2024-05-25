@@ -7,7 +7,7 @@
 using namespace std;
 
 vector<string> parseInfix(const string &exp){
-  vector<string token;
+  vector<string> token;
   string num;
   for(size_t i=0;i<exp.size();++i){
   char ch = exp[i];
@@ -21,8 +21,9 @@ vector<string> parseInfix(const string &exp){
           token.push_back(num);
           num.clear();
       }
-      if(ch=='-'&&(token.empty() || token.back() =="(" || token.back() == "*" || token.back() == "+" || token.back == "-" || token.back() == "%")){
-        if(i+1<exp.size() && isdigit(exp[i=1])){
+      if(ch=='-'&&(i == 0 || exp[i-1] == '(' || exp [i-1] == '*' || exp[i-1]=='/' || exp[i-1] == '+' || exp [i-1] == '%' || exp[i-1] == '-')) {
+        if (i+1<exp.size() && isdigit(exp[i+1])){
+            num += ch;
         }else{
           token.push_back("-1");
           token.push_back("*");
