@@ -1,1 +1,41 @@
+#include <iostream>
+#include <vector> 
+#include <string>
+#include <cctype>
+#include <stack>
 
+using namespace std;
+
+vector<string> parseInfix(const string &exp){
+  vector<string token;
+  string num;
+  for(size_t i=0;i<exp.size();++i){
+  char ch = exp[i];
+  if(isspace(ch)){
+    continue;
+  }
+  if(isdigit(ch)){
+    num+=ch;
+  }else{
+      if(!num.empty()){
+          token.push_back(num);
+          num.clear();
+      }
+      if(ch=='-'&&(token.empty() || token.back() =="(" || token.back() == "*" || token.back() == "+" || token.back == "-" || token.back() == "%")){
+        if(i+1<exp.size() && isdigit(exp[i=1])){
+        }else{
+          token.push_back("-1");
+          token.push_back("*");
+        }
+      }else if( ch == '-' && (token.empty() || token.back() == "(" || token.back() == "*" || token.back() == "+" || token.back == "-" || token.back() == "%")){
+          token.push_back("-1");
+          token.push_back("*");
+        }else{
+        }
+    }
+}
+if(!num.empty()){  
+    token.push_back(num);
+  }
+  return token;
+}
