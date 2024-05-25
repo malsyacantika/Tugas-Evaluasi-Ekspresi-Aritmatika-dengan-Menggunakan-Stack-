@@ -6,10 +6,10 @@
 
 using namespace std;
 
-int prec (char oop) {
-if (oop == '+' || oop == '-') return 1;
-if (oop == '*' || oop == '/'|| oop == '%') return 2;
-return 0;
+int prec (char op) {
+  if (op == '+' || op == '-') return 1;
+  if (op == '*' || op == '/'|| op == '%') return 2;
+  return 0;
 }
 
 bool isOp (char ch){
@@ -18,15 +18,15 @@ return (ch == '+' || ch == '-' || ch == '*' || ch == '/'|| ch == '%');
 
 bool isNum (const string& tok){
 if (isdigit(tok[0])){
-return true ;
+  return true ;
 } else if(tok.size() > 1 && tok[0] == '-' && isdigit (tok[1])){
-return true;
+  return true;
 }
-return false;
+  return false;
 }
 
-vector<string> parseInfix(const string &exp){
-  vector<string> tok;
+vector<string> parseInfix(const string& exp){
+  vector<string> tokens;
   string num;
   for(size_t i=0;i<exp.size();++i){
   char ch = exp[i];
@@ -37,26 +37,35 @@ vector<string> parseInfix(const string &exp){
     num+=ch;
   }else{
       if(!num.empty()){
-          tok.push_back(num);
+          tokens.push_back(num);
           num.clear();
       }
       if(ch=='-'&&(i == 0 || exp[i-1] == '(' || exp [i-1] == '*' || exp[i-1]=='/' || exp[i-1] == '+' || exp [i-1] == '%' || exp[i-1] == '-')) {
         if (i+1<exp.size() && isdigit(exp[i+1])){
             num += ch;
         }else{
-          tok.push_back("-1");
-          tok.push_back("*");
+          tokens.push_back("-1");
+          tokens.push_back("*");
         }
-      }else if( ch == '-' && (tok.empty() || tok.back() == "(" || tok.back() == "*" || tok.back() == "+" || tok.back == "-" || tok.back() == "%")){
-          tok.push_back("-1");
-          tok.push_back("*");
+      }else if( ch == '-' && (tokens.empty() || tokens.back() == "(" || tokens.back() == "*" || tokens.back() == "+" || tokens.back == "-" || tokens.back() == "%")){
+          tokens.push_back("-1");
+          tokens.push_back("*");
         }else{
-          tok.push_back(string(1,ch));
+          tokens.push_back(string(1,ch));
         }
     }
 }
 if(!num.empty()){  
-    tok.push_back(num);
+    tokens.push_back(num);
   }
-  return tok;
+  return tokens;
+}
+int main(){
+  string input;
+  getline(cin,input);
+
+  vector<string> tokens = parseInfix(input);
+  print_tokens(tokens);
+
+return 0;
 }
