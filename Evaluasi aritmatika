@@ -90,19 +90,20 @@ int evaluatePostfix(const vector<string>& tokens){
       else if(token == "*") operands.push(operand1 * operand2);
       else if(token == "/") operands.push(operand1 / operand2);
       else if(token == "%") operands.push(operand1 % operand2);
-}
-} 
-return operands.top();
+    }
+  } 
+  return operands.top();
 }
 
 int main(){
   string infix;
   getline(cin,infix);
 
-vector<string> postfix = InfixToPostfix(infix);
+  vector<string> postfix = InfixToPostfix(infix);
 
-int result = evaluatePostfix(postfix);
-cout<<result<<endl;
+  int result = evaluatePostfix(postfix);
+  cout<<result<<endl;
+  
 return 0;
 }
 
