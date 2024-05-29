@@ -94,5 +94,12 @@ return operands.top();
 
 int main(){
   string infix;
-  getline
+  getline(cin,infix);
+
+vector<string> postfix = InfixToPostfix(infix);
+
+int result = evaluatePostfix(postfix);
+cout<<result<<endl;
+return 0;
+}
 
