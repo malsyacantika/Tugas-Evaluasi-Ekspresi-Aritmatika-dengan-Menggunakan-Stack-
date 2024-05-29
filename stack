@@ -6,21 +6,140 @@
 
 using namespace std;
 
-int prec (char op) {
-if (op == '+' || op == '-') return 1;
-if (op == '*' || op == '/'|| op == '%') return 2;
-return 0;
+int prec(char op) {
+    if (op == '+' || op == '-') return 1;
+    if (op == '*' || op == '/' || op == '%') return 2;
+    return 0;
 }
 
-bool isOp (char ch){
-return (ch == '+' || ch == '-' || ch == '*' || ch == '/'|| ch == '%');
+bool isOp(char ch) {
+    return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%');
 }
 
-bool isNum (const string& tok){
-if (isdigit(tok[0])){
-return true ;
-} else if(tok.size() > 1 && tok[0] == '-' && isdigit (tok[1])){
-return true;
+bool isNum(const string& token) {
+    if (isdigit(token[0])) {
+        return true;
+    } else if (token.size() > 1 && token[0] == '-' && isdigit(token[1])) {
+        return true;
+    }
+    return false;
 }
-return false;
+
+vector<string> parseInfix(const string &exp) {
+    vector<string> token;
+    string num;
+    for (size_t i = 0; i < exp.size(); ++i) {
+        char ch = exp[i];
+        if (isspace(ch)) {
+            continue;
+        }
+        if (isdigit(ch)) {
+            num += ch;
+        } else {
+            if (!num.empty()) {
+                token.push_back(num);
+                num.clear();
+            }
+            if (ch == '-' && (i == 0 || exp[i-1] == '(' || exp[i-1] == '*' || exp[i-1] == '/' || exp[i-1] == '+' || exp[i-1] == '%' || exp[i-1] == '-')) {
+                if (i + 1 < exp.size() && isdigit(exp[i + 1])) {
+                    num += ch;
+                } else {
+                    token.push_back("-1");
+                    token.push_back("*");
+                }
+            } else if (ch == '-' && (token.empty() || token.back() == "(" || token.back() == "*" || token.back() == "/" || token.back() == "+" || token.back() == "-" || token.back() == "%")) {
+                token.push_back("-1");
+                token.push_back("*");
+            } else {
+                token.push_back(string(1, ch));
+            }
+        }
+    }
+    if (!num.empty()) {
+        token.push_back(num);
+    }
+    return token;
+}
+
+vector<string> infixToPostfix(const string& exp) {
+    vector<string> postfix;
+    stack<string> oprs;
+
+    auto addOp = [&postfix](const string& op) {
+        postfix.push_back(op);
+    };
+
+    for (size_t i = 0; i < exp.size(); ++i) {
+        char ch = exp[i];
+        if (isspace(ch)) {
+            continue;
+        } else if (isdigit(ch)) {
+            string num(1, ch);
+            while (i + 1 < exp.size() && isdigit(exp[i + 1])) {
+                num += exp[++i];
+            }
+            postfix.push_back(num);
+        } else {
+            if (ch == '(') {
+                oprs.push(string(1, ch));
+            } else if (ch == ')') {
+                while (!oprs.empty() && oprs.top() != "(") {
+                    addOp(oprs.top());
+                    oprs.pop();
+                }
+                oprs.pop();
+            } else {
+                if ((i == 0 || !isdigit(exp[i - 1]) || exp[i - 1] == '(') && ch == '-') {
+                    addOp("-1");
+                    oprs.push("*");
+                } else {
+                    while (!oprs.empty() && oprs.top() != "(" && prec(oprs.top()[0]) >= prec(ch)) {
+                        addOp(oprs.top());
+                        oprs.pop();
+                    }
+                    oprs.push(string(1, ch));
+                }
+            }
+        }
+    }
+    while (!oprs.empty()) {
+        addOp(oprs.top());
+        oprs.pop();
+    }
+
+    return postfix;
+}
+
+int evaluatePostfix(const vector<string>& tokens) {
+    stack<int> operands;
+    for (const string& token : tokens) {
+        if (isNum(token)) {
+            operands.push(stoi(token));
+        } else {
+            int operand2 = operands.top(); operands.pop();
+            int operand1 = operands.top(); operands.pop();
+            if (token == "+") operands.push(operand1 + operand2);
+            else if (token == "-") operands.push(operand1 - operand2);
+            else if (token == "*") operands.push(operand1 * operand2);
+            else if (token == "/") operands.push(operand1 / operand2);
+            else if (token == "%") operands.push(operand1 % operand2);
+        }
+    }
+    return operands.top();
+}
+
+int main() {
+    string exp;
+    getline(cin, exp);
+
+    vector<string> postfix = infixToPostfix(exp);
+    for (const string& token : postfix) {
+        cout << token << " ";
+    }
+    cout << endl;
+
+    int result = evaluatePostfix(postfix);
+    cout << result << endl;
+
+    return 0;
 }
