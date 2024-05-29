@@ -70,7 +70,8 @@ oprs.push(string(1, ch));
 }
 
 while (!oprs.empty()){
-addOp(oprs.top());
+
+  addOp(oprs.top());
     oprs.pop();
 }
 return postfix;
